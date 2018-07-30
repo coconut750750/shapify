@@ -3,16 +3,19 @@ from PIL import Image
 import sys
 import colorsys
 
-from pixel_kmeans import PixelKMeans
+from shapify.palette.pixel_kmeans import PixelKMeans
 
 class PaletteBuilder:
-    def __init__(self, img):
+    def __init__(self, img, filename=None):
         self.img = img
+        if not img and filename:
+            self.img = Image.open(filename, mode='r').convert('RGB')
 
     def get_new_palette(self):
         frequent_pix = self.get_frequent_pix(num_pix=200)
         kmeans = PixelKMeans(frequent_pix, k=5)
-        return kmeans.run()
+        palette = kmeans.run()
+        return PaletteBuilder.sort_palette(palette)
 
     def get_frequent_pix(self, num_pix=-1):
         """
@@ -33,6 +36,11 @@ class PaletteBuilder:
     def to_hex(self, arr):
         arr = np.ascontiguousarray(arr)
         return arr.view(np.dtype((np.void, arr.dtype.itemsize * arr.shape[-1])))
+
+    @staticmethod
+    def sort_palette(palette):
+        sorted_palette = sorted(palette, key=lambda rgb: colorsys.rgb_to_hsv(*rgb))
+        return np.array(sorted_palette)
 
     @staticmethod
     def show_palette(palette, square_size=100):
