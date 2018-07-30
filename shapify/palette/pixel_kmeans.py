@@ -15,14 +15,14 @@ class PixelKMeans:
         centroids = self.initialize()
         prev_error = -1
         for i in range(max_iters):
+            if len(centroids) < self.starting_k:
+                self.add_centroids(centroids)
             error = self.assign(centroids)
             if prev_error == error:
                 break
             centroids = self.update()
-            if len(centroids) < self.starting_k:
-                self.add_centroids(centroids)
             prev_error = error
-        return [list(map(int, i)) for i in centroids]
+        return [list(map(int, i)) for i in set(tuple(x) for x in centroids)]
 
     def initialize(self):
         centroids = [
@@ -44,7 +44,7 @@ class PixelKMeans:
             )
             self.pixels_df[dist_cols[key]] = dists
         self.pixels_df[CLOSEST] = self.pixels_df.loc[:, dist_cols].idxmin(axis=1)
-        return self.pixels_df[dist_cols].min(axis=1).mean()
+        return self.pixels_df[dist_cols].min(axis=1).max()
 
     def update(self):
         centroids = [
