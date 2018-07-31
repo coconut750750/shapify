@@ -1,5 +1,6 @@
 import random
 
+from shapify.genetic.env_constants import Constants
 from shapify.genetic.organism import Organism
 from shapify.palette.palette_builder import PaletteBuilder
 
@@ -20,8 +21,10 @@ class Pool:
         self.image_size = self.target.size
         self.population = []
 
+        Constants.init(self.palette, self.image_size)
+
     def seed(self):
-        self.population = [Organism(self.image_size, colors=self.palette) for i in range(self.total_pop)]
+        self.population = [Organism() for i in range(self.total_pop)]
 
     def fitness(self, organism):
         return organism.calculate_fitness(self.target)
@@ -45,6 +48,11 @@ class Pool:
 
         self.population += new_pop
         return self.population
+
+    def mutate(self):
+        for organism in self.population:
+            if random.random() < self.mutation_rate:
+                organism.mutate()
 
     def get_best_organism(self):
         best = 0

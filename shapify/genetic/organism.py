@@ -1,16 +1,17 @@
 import numpy as np
 from PIL import Image, ImageDraw
+import random
 
+from shapify.genetic.env_constants import Constants
 from shapify.genetic.art_tools.polygon import Polygon
 
 
 class Organism:
-    def __init__(self, image_size, starting_polys=1, colors=None):
-        self.image_size = image_size
-        self.polygons = [Polygon.random(image_size[0], image_size[1], colors=colors) for _ in range(starting_polys)]
+    def __init__(self, starting_polys=1):
+        self.polygons = [Polygon.random() for _ in range(starting_polys)]
 
     def get_image(self):
-        new_image = Image.new('RGB', self.image_size)
+        new_image = Image.new('RGB', Constants.image_size)
         image_draw = ImageDraw.Draw(new_image)
 
         for polygon in self.polygons:
@@ -41,6 +42,14 @@ class Organism:
             else:
                 child_polys.append(parents.polygons[(i + 1) % 2][i].clone())
 
-        child = Organism(self.image_size, starting_polys=0)
+        child = Organism(starting_polys=0)
         child.polygons = child_polys
         return child
+
+    def mutate(self):
+        mutation_type = random.randint(1, 3)
+        if mutation_type == 1: # add poly
+            self.polygons.append(Polygon.random())
+        # add poly
+        # move poly
+        # remove poly

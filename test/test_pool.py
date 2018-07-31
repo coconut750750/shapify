@@ -10,7 +10,6 @@ class TestPool:
     def setup_method(self):
         self.image = Image.open('test.png', 'r').convert('RGB')
         self.pool = Pool(self.image, total_pop=10)
-        print(self.pool.image_size)
         self.pool.seed()
 
     def test_pool_seed(self):

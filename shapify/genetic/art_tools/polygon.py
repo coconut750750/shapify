@@ -1,6 +1,8 @@
 import copy
 import random
 
+from shapify.genetic.env_constants import Constants
+
 class Polygon:
     def __init__(self, color, points):
         self.color = color
@@ -18,9 +20,9 @@ class Polygon:
         return other.color == self.color and other.points == self.points
 
     @staticmethod
-    def random(max_width, max_height, colors=None, sides=3):
-        if colors is not None:
-            color = tuple(random.choice(colors))
+    def random(sides=3):
+        if Constants.colors is not None:
+            color = tuple(random.choice(Constants.colors))
         else:
             r = random.randint(0, 255)
             g = random.randint(0, 255)
@@ -30,8 +32,8 @@ class Polygon:
 
         points = []
         for i in range(sides):
-            x = random.randint(0, max_width)
-            y = random.randint(0, max_height)
+            x = random.randint(0, Constants.image_size[0])
+            y = random.randint(0, Constants.image_size[1])
             points.append((x, y))
 
         return Polygon(color, points)
