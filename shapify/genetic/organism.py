@@ -50,6 +50,13 @@ class Organism:
         mutation_type = random.randint(1, 3)
         if mutation_type == 1: # add poly
             self.polygons.append(Polygon.random())
-        # add poly
-        # move poly
-        # remove poly
+        elif mutation_type == 2: # move polys
+            self.mutate_polys()
+        else: # remove poly
+            to_remove = random.randint(0, len(self.polygons) - 1)
+            del self.polygons[to_remove]
+
+    def mutate_polys(self):
+        for i, _ in enumerate(self.polygons):
+            if random.random() < 0.5:
+                self.polygons[i].move_randomly()

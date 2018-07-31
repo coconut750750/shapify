@@ -53,6 +53,7 @@ class Pool:
         for organism in self.population:
             if random.random() < self.mutation_rate:
                 organism.mutate()
+        return self.population
 
     def get_best_organism(self):
         best = 0

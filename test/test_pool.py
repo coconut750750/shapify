@@ -26,3 +26,6 @@ class TestPool:
         orig = self.pool.weed()
         new = self.pool.breed()
         assert len(new) == len(orig) * 1
+
+    def test_pool_mutate(self):
+        mutate_pop = self.pool.mutate()
