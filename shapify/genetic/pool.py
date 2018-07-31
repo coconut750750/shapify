@@ -8,7 +8,7 @@ from shapify.palette.palette_builder import PaletteBuilder
 class Pool:
     def __init__(self, target,
                  total_pop=100,
-                 mutation_rate=0.25,
+                 mutation_rate=0.2,
                  generations=100):
         self.target = target
         self.total_pop = 100
@@ -23,19 +23,28 @@ class Pool:
 
         Constants.init(self.palette, self.image_size)
 
+    def run(self):
+        for i in range(self.generations):
+            print('Iteration {}'.format(i))
+            self.seed()
+            self.weed()
+            self.breed()
+            self.mutate()
+            print('Best fitness: {}'.format(self.get_best_organism()[1]))
+        return self.get_best()
+
     def seed(self):
         self.population = [Organism() for i in range(self.total_pop)]
 
     def fitness(self, organism):
         return organism.calculate_fitness(self.target)
 
-    def weed(self, top_percent=0.4, lucky_percent=0.1):
+    def weed(self, top_percent=0.45, lucky_percent=0.05):
         top = int(len(self.population) * top_percent)
         lucky = int(len(self.population) * lucky_percent)
 
         pop_sorted = sorted(self.population, key=self.fitness)
-        pop_sorted.reverse()
-        self.population = pop_sorted[:top] + random.sample(self.population[top:], lucky)
+        self.population = pop_sorted[-top:] + random.sample(self.population[:-top], lucky)
         return self.population
 
     def breed(self):
@@ -65,7 +74,7 @@ class Pool:
                 max_fitness = fitness
                 best = i
 
-        return self.population[i]
+        return self.population[i], max_fitness
 
     def get_best(self):
-        return self.get_best_organism().get_image()
+        return self.get_best_organism()[0].get_image()

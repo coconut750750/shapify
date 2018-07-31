@@ -7,15 +7,17 @@ from shapify.genetic.art_tools.polygon import Polygon
 
 
 class Organism:
-    def __init__(self, starting_polys=1):
+    def __init__(self, starting_polys=100):
         self.polygons = [Polygon.random() for _ in range(starting_polys)]
 
     def get_image(self):
         new_image = Image.new('RGB', Constants.image_size)
-        image_draw = ImageDraw.Draw(new_image)
+        image_draw = ImageDraw.Draw(new_image, 'RGBA')
 
         for polygon in self.polygons:
             polygon.draw(image_draw)
+
+        del image_draw
 
         return new_image
 
@@ -59,4 +61,4 @@ class Organism:
     def mutate_polys(self):
         for i, _ in enumerate(self.polygons):
             if random.random() < 0.5:
-                self.polygons[i].move_randomly()
+                self.polygons[i].mutate()

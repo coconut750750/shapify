@@ -24,3 +24,7 @@ class TestOrganism:
         child = o1.breed(o2)
         assert child.polygons[0] == o1.polygons[0]
         assert child.polygons[1] == o2.polygons[1]
+
+    def test_simple_organism_draw(self):
+        o1 = Organism(starting_polys=10)
+        o1.get_image().show()
