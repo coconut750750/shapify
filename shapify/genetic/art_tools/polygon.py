@@ -1,3 +1,4 @@
+import copy
 import random
 
 class Polygon:
@@ -7,6 +8,14 @@ class Polygon:
 
     def draw(self, image_draw):
         image_draw.polygon(self.points, fill=self.color)
+
+    def clone(self):
+        return copy.deepcopy(self)
+
+    def __eq__(self, other):
+        if type(other) != Polygon:
+            return False
+        return other.color == self.color and other.points == self.points
 
     @staticmethod
     def random(max_width, max_height, colors=None, sides=3):
