@@ -13,12 +13,7 @@ class Polygon:
         image_draw.polygon(self.points, fill=self.color)
 
     def mutate(self):
-        for index, point in enumerate(self.points):
-            if random.random() < 0.5:
-                x_shift = (random.random() * 2 - 1) * Constants.polygon_max_shift
-                y_shift = (random.random() * 2 - 1) * Constants.polygon_max_shift
-                new_pos = (self.points[index][0] + x_shift, self.points[index][1] + y_shift)
-                self.points[index] = new_pos
+        self.points = Polygon.get_random_points(self.origin)
 
     def clone(self):
         return copy.deepcopy(self)
