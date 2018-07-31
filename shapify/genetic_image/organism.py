@@ -2,8 +2,8 @@ import numpy as np
 from PIL import Image, ImageDraw
 import random
 
-from shapify.genetic.env_constants import Constants
-from shapify.genetic.art_tools.polygon import Polygon
+from shapify.tools.env_constants import Constants
+from shapify.genetic_image.art_tools.polygon import Polygon
 
 
 class Organism:

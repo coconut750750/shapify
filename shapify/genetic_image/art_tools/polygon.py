@@ -1,7 +1,7 @@
 import copy
 import random
 
-from shapify.genetic.env_constants import Constants
+from shapify.tools.env_constants import Constants
 
 class Polygon:
     def __init__(self, color, origin=None, points=None):
@@ -46,7 +46,7 @@ class Polygon:
             g = random.randint(0, 255)
             b = random.randint(0, 255)
             color = (r, g, b)
-        return color + (random.randint(25, 50), )
+        return color + (random.randint(*Constants.alpha_range), )
 
     @staticmethod
     def get_random_origin():

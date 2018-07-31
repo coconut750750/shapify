@@ -5,8 +5,8 @@ Testing module for Organism
 import numpy as np
 from PIL import Image
 
-from shapify.genetic.env_constants import Constants
-from shapify.genetic.organism import Organism
+from shapify.tools.env_constants import Constants
+from shapify.genetic_image.organism import Organism
 from shapify.palette.palette_builder import PaletteBuilder
 
 
