@@ -12,8 +12,11 @@ class Polygon:
     def draw(self, image_draw):
         image_draw.polygon(self.points, fill=self.color)
 
-    def mutate(self):
+    def mutate_pos(self):
         self.points = Polygon.get_random_points(self.origin)
+
+    def mutate_color(self):
+        self.color = Polygon.get_random_color()
 
     def clone(self):
         return copy.deepcopy(self)

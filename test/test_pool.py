@@ -9,7 +9,7 @@ from shapify.genetic.pool import Pool
 class TestPool:
     def setup_method(self):
         self.image = Image.open('test.png', 'r').convert('RGB')
-        self.pool = Pool(self.image, total_pop=1000, generations=50)
+        self.pool = Pool(self.image, total_pop=500, generations=100)
         self.pool.seed()
 
     # def test_pool_seed(self):

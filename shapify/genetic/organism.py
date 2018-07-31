@@ -42,23 +42,30 @@ class Organism:
             if i < len(cur_parent.polygons):
                 child_polys.append(cur_parent.polygons[i].clone())
             else:
-                child_polys.append(parents.polygons[(i + 1) % 2][i].clone())
+                child_polys.append(parents[(i + 1) % 2].polygons[i].clone())
 
         child = Organism(starting_polys=0)
         child.polygons = child_polys
         return child
 
     def mutate(self):
-        mutation_type = random.randint(1, 3)
+        mutation_type = random.randint(1, 4)
         if mutation_type == 1: # add poly
             self.polygons.append(Polygon.random())
         elif mutation_type == 2: # move polys
-            self.mutate_polys()
-        else: # remove poly
+            self.mutate_poly_positions()
+        elif mutation_type == 3: # remove poly
             to_remove = random.randint(0, len(self.polygons) - 1)
             del self.polygons[to_remove]
+        elif mutation_type == 4: # change color
+            self.mutate_poly_colors()
 
-    def mutate_polys(self):
+    def mutate_poly_positions(self):
         for i, _ in enumerate(self.polygons):
             if random.random() < 0.5:
-                self.polygons[i].mutate()
+                self.polygons[i].mutate_pos()
+
+    def mutate_poly_colors(self):
+        for i, _ in enumerate(self.polygons):
+            if random.random() < 0.5:
+                self.polygons[i].mutate_color()

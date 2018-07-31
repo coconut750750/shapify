@@ -15,7 +15,7 @@ class Pool:
         self.mutation_rate = mutation_rate
         self.generations = generations
 
-        pb = PaletteBuilder(self.target)
+        pb = PaletteBuilder(self.target, colors=10)
         self.palette = pb.get_new_palette()
 
         self.image_size = self.target.size
@@ -24,9 +24,9 @@ class Pool:
         Constants.init(self.palette, self.image_size)
 
     def run(self):
+        self.seed()
         for i in range(self.generations):
             print('Iteration {}'.format(i))
-            self.seed()
             self.weed()
             self.breed()
             self.mutate()
