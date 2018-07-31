@@ -46,7 +46,7 @@ class Polygon:
             g = random.randint(0, 255)
             b = random.randint(0, 255)
             color = (r, g, b)
-        return color + (random.randint(25, 50), )
+        return color + (random.randint(*Constants.alpha_range), )
 
     @staticmethod
     def get_random_origin():

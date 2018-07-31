@@ -1,15 +1,19 @@
 import sys
 from PIL import Image
-
+ 
 from shapify.genetic.pool import Pool
-
-
+from shapify.palette.palette_builder import PaletteBuilder
+ 
+ 
 if __name__ == '__main__':
-    if len(sys.argv) > 1:
-        pic_name = sys.argv[1]
-    else:
-        pic_name = 'test.png'
+    pic_name = 'test2.png'
     image = Image.open(pic_name, 'r').convert('RGB')
-    pool = Pool(image, total_pop=500, generations=100)
-    best_img = pool.run()
+    if len(sys.argv) > 1:
+        pool = Pool.load(sys.argv[1])
+    else:
+        pool = Pool(image, total_pop=500)
+ 
+    best_img = pool.run(100)
     best_img.show()
+    pool.save('pool.dat')
+ 
