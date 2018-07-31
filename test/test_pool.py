@@ -10,6 +10,7 @@ class TestPool:
     def setup_method(self):
         self.image = Image.open('test.png', 'r').convert('RGB')
         self.pool = Pool(self.image, total_pop=10)
+        print(self.pool.image_size)
         self.pool.seed()
 
     def test_pool_seed(self):
@@ -21,3 +22,8 @@ class TestPool:
         assert len(next_gen) == self.pool.total_pop // 2
 
         next_gen[0].get_image().show()
+
+    def test_pool_breed(self):
+        orig = self.pool.weed()
+        new = self.pool.breed()
+        assert len(new) == len(orig) * 1

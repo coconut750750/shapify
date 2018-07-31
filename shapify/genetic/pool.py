@@ -32,17 +32,19 @@ class Pool:
 
         pop_sorted = sorted(self.population, key=self.fitness)
         pop_sorted.reverse()
-        return pop_sorted[:top] + random.sample(self.population[top:], lucky)
+        self.population = pop_sorted[:top] + random.sample(self.population[top:], lucky)
+        return self.population
 
-    def breed(self, old_pop):
-        num_children = self.total_pop - len(old_pop)
+    def breed(self):
+        num_children = self.total_pop - len(self.population)
         new_pop = []
 
         for i in range(num_children):
-            random_parents = random.sample(old_pop, 2)
-            new_pop.append(random_parents[0].bread(random_parents[1]))
+            random_parents = random.sample(self.population, 2)
+            new_pop.append(random_parents[0].breed(random_parents[1]))
 
-        return old_pop + new_pop
+        self.population += new_pop
+        return self.population
 
     def get_best_organism(self):
         best = 0
