@@ -26,11 +26,10 @@ class Pool:
     def run(self):
         self.seed()
         for i in range(self.generations):
-            print('Iteration {}'.format(i))
             self.weed()
             self.breed()
             self.mutate()
-            print('Best fitness: {}'.format(self.get_best_organism()[1]))
+            print('Generation {}\tBest fitness: {}'.format(i, self.get_best_organism()[1]))
         return self.get_best()
 
     def seed(self):
