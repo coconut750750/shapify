@@ -28,5 +28,5 @@ class TestPool:
         mutate_pop = self.pool.mutate()
 
     def test_pool_run(self):
-        best_img = self.pool.run()
+        best_img = self.pool.run(1)
         best_img.show()
