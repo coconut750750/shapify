@@ -8,28 +8,28 @@ from shapify.palette.palette_builder import PaletteBuilder
 class Pool:
     def __init__(self, target,
                  total_pop=100,
-                 mutation_rate=0.2,
-                 generations=100):
+                 mutation_rate=0.2):
         self.target = target
         self.total_pop = 100
         self.mutation_rate = mutation_rate
-        self.generations = generations
+        self.generation = 0
 
         pb = PaletteBuilder(self.target, colors=10)
         self.palette = pb.get_new_palette()
 
         self.image_size = self.target.size
         self.population = []
+        self.seed()
 
         Constants.init(self.palette, self.image_size)
 
-    def run(self):
-        self.seed()
-        for i in range(self.generations):
+    def run(self, generations=100):
+        for i in range(generations):
+            self.generation += 1
             self.weed()
             self.breed()
             self.mutate()
-            print('Generation {}\tBest fitness: {}'.format(i, self.get_best_organism()[1]))
+            print('Generation {}\tBest fitness: {}'.format(self.generation, self.get_best_organism()[1]))
         return self.get_best()
 
     def seed(self):

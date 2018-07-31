@@ -9,8 +9,7 @@ from shapify.genetic.pool import Pool
 class TestPool:
     def setup_method(self):
         self.image = Image.open('test.png', 'r').convert('RGB')
-        self.pool = Pool(self.image, total_pop=5, generations=10)
-        self.pool.seed()
+        self.pool = Pool(self.image, total_pop=5)
 
     def test_pool_seed(self):
         best = self.pool.get_best()
