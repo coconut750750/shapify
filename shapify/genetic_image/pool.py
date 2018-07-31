@@ -1,5 +1,8 @@
 import pickle
 import random
+import pickle
+
+from PIL import Image 
 
 from PIL import Image
 
@@ -20,7 +23,6 @@ class Pool:
         pb = PaletteBuilder(self.target, colors=10)
         self.palette = pb.get_new_palette()
         self.image_size = self.target.size
-
         Constants.init(self.palette, self.image_size)
 
         self.population = []
@@ -81,6 +83,7 @@ class Pool:
     def get_best(self):
         return self.get_best_organism()[0].get_image()
 
+<<<<<<< HEAD:shapify/genetic_image/pool.py
     def save(self, filename):
         with open(filename, 'wb') as f:
             self.target = self.target.tobytes()
@@ -93,3 +96,17 @@ class Pool:
             pool.target = Image.frombytes('RGB', pool.image_size, pool.target)
             Constants.init(pool.palette, pool.image_size)
             return pool
+=======
+    def save(self, filename): 
+        with open(filename, 'wb') as f: 
+            self.target = self.target.tobytes() 
+            pickle.dump(self, f) 
+ 
+    @staticmethod 
+    def load(filename): 
+        with open(filename, 'rb') as f: 
+            pool = pickle.load(f) 
+            pool.target = Image.frombytes('RGB', pool.image_size, pool.target) 
+            Constants.init(pool.palette, pool.image_size) 
+            return pool 
+>>>>>>> master:shapify/genetic/pool.py

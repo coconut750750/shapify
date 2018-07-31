@@ -12,7 +12,8 @@ if __name__ == '__main__':
         pool = Pool.load(sys.argv[1])
     else:
         pool = Pool(image, total_pop=500)
-
+ 
     best_img = pool.run(100)
     best_img.show()
     pool.save('pool.dat')
+ 
