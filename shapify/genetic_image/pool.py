@@ -78,7 +78,7 @@ class Pool:
                 max_fitness = fitness
                 best = i
 
-        return self.population[i], max_fitness
+        return self.population[best], max_fitness
 
     def get_best(self):
         return self.get_best_organism()[0].get_image()

@@ -13,9 +13,7 @@ if __name__ == '__main__':
     else:
         pool = Pool(image, total_pop=500)
  
-    best_img = pool.run(50)
+    best_img = pool.run(10)
     best_img.show()
-    last_org = pool.population[-1]
-    last_org.get_image().show()
     pool.save('pool.dat')
  

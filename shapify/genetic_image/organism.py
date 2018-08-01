@@ -50,30 +50,7 @@ class Organism:
         child.mutate()
         return child
 
-    # def mutate(self):
-    #     mutation_type = random.randint(1, 4)
-    #     if mutation_type == 1: # add poly
-    #         self.polygons.append(Polygon.random())
-    #     elif mutation_type == 2: # move polys
-    #         self.mutate_poly(Polygon.mutate_pos)
-    #     elif mutation_type == 3: # remove poly
-    #         to_remove = random.randint(0, len(self.polygons) - 1)
-    #         del self.polygons[to_remove]
-    #     elif mutation_type == 4: # change color
-    #         self.mutate_poly(Polygon.mutate_color)
-
     def mutate(self):
-        mutation_type = random.randint(1, 4)
-        if mutation_type == 1: # move polys
-            self.mutate_poly(Polygon.mutate_pos)
-        elif mutation_type == 2: # change color
-            self.mutate_poly(Polygon.mutate_color)
-        elif mutation_type == 3: # add poly point
-            self.mutate_poly(Polygon.add_point)
-        elif mutation_type == 4: # remove poly point
-            self.mutate_poly(Polygon.remove_point)
-
-    def mutate_poly(self, mutation):
         for i, _ in enumerate(self.polygons):
             if random.random() < 0.5:
-                mutation(self.polygons[i])
+                self.polygons[i].mutate()
