@@ -3,14 +3,13 @@ from PIL import Image, ImageDraw
 import random
 
 from shapify.tools.env_constants import Constants
-from shapify.genetic_image.art_tools.polar_polygon import PolarPolygon
-from shapify.genetic_image.art_tools.cartesian_polygon import CartesianPolygon
 
 
 class Organism:
-    def __init__(self, starting_polys=50, max_polys=100):
+    def __init__(self, poly_type, starting_polys=50, max_polys=100):
+        self.poly_type = poly_type
         self.max_polys = max_polys
-        self.polygons = [CartesianPolygon.random() for _ in range(starting_polys)]
+        self.polygons = [self.poly_type.random() for _ in range(starting_polys)]
 
     def get_image(self):
         new_image = Image.new('RGB', Constants.image_size)
@@ -46,14 +45,36 @@ class Organism:
             else:
                 child_polys.append(parents[(i + 1) % 2].polygons[i].clone())
 
-        child = Organism(num_polys=0)
+        child = Organism(self.poly_type, starting_polys=0, max_polys=self.max_polys)
         child.polygons = child_polys
 
         child.mutate()
         return child
 
-    def mutate(self):
+    def add_poly(self):
+        if len(self.polygons) < self.max_polys:
+            to_add = random.randint(0, len(self.polygons))
+            self.polygons.insert(to_add, self.poly_type.random())
+
+    def remove_poly(self):
+        if len(self.polygons) > 1:
+            to_remove = random.randint(0, len(self.polygons) - 1)
+            del self.polygons[to_remove]
+
+    def mutate_poly(self):
+        to_mutate = random.randint(0, len(self.polygons) - 1)
+        self.polygons[to_mutate].mutate()
+
+    def randomize_polys(self):
         random.shuffle(self.polygons)
-        for i, _ in enumerate(self.polygons):
-            if random.random() < 0.5:
-                self.polygons[i].mutate()
+
+    def mutate(self):
+        mutation_type = random.randint(1, 4)
+        if mutation_type == 1:
+            self.add_poly()
+        elif mutation_type == 2:
+            self.remove_poly()
+        elif mutation_type == 3:
+            self.mutate_poly()
+        elif mutation_type == 4:
+            self.randomize_polys
