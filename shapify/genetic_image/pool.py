@@ -33,7 +33,7 @@ class Pool:
             self.generation += 1
             self.weed()
             self.breed()
-            self.mutate()
+            # self.mutate()
             print('Generation {}\tBest fitness: {}'.format(self.generation, self.get_best_organism()[1]))
         return self.get_best()
 
@@ -43,7 +43,7 @@ class Pool:
     def fitness(self, organism):
         return organism.calculate_fitness(self.target)
 
-    def weed(self, top_percent=0.45, lucky_percent=0.05):
+    def weed(self, top_percent=0.35, lucky_percent=0.15):
         top = int(len(self.population) * top_percent)
         lucky = int(len(self.population) * lucky_percent)
 

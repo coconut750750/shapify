@@ -11,9 +11,11 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         pool = Pool.load(sys.argv[1])
     else:
-        pool = Pool(image, total_pop=500)
+        pool = Pool(image, total_pop=100)
  
-    best_img = pool.run(10)
+    best_img = pool.run(1)
     best_img.show()
+    last = pool.population[-1].get_image()
+    last.show()
     pool.save('pool.dat')
  

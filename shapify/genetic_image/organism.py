@@ -3,12 +3,14 @@ from PIL import Image, ImageDraw
 import random
 
 from shapify.tools.env_constants import Constants
-from shapify.genetic_image.art_tools.polygon import Polygon
+from shapify.genetic_image.art_tools.polar_polygon import PolarPolygon
+from shapify.genetic_image.art_tools.cartesian_polygon import CartesianPolygon
 
 
 class Organism:
-    def __init__(self, num_polys=50):
-        self.polygons = [Polygon.random() for _ in range(num_polys)]
+    def __init__(self, starting_polys=50, max_polys=100):
+        self.max_polys = max_polys
+        self.polygons = [CartesianPolygon.random() for _ in range(starting_polys)]
 
     def get_image(self):
         new_image = Image.new('RGB', Constants.image_size)
@@ -51,6 +53,7 @@ class Organism:
         return child
 
     def mutate(self):
+        random.shuffle(self.polygons)
         for i, _ in enumerate(self.polygons):
             if random.random() < 0.5:
                 self.polygons[i].mutate()
