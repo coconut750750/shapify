@@ -14,9 +14,9 @@ from shapify.palette.palette_builder import PaletteBuilder
 class Pool:
     def __init__(self, target,
                  total_pop=100,
-                 mutation_rate=0.2):
+                 mutation_rate=0.25):
         self.target = target
-        self.total_pop = 100
+        self.total_pop = total_pop
         self.mutation_rate = mutation_rate
         self.generation = 0
 
