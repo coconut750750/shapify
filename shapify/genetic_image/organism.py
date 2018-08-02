@@ -6,7 +6,7 @@ from shapify.tools.env_constants import Constants
 
 
 class Organism:
-    def __init__(self, poly_type, starting_polys=50, max_polys=100):
+    def __init__(self, poly_type, starting_polys=10, max_polys=100):
         self.poly_type = poly_type
         self.max_polys = max_polys
         self.polygons = [self.poly_type.random() for _ in range(starting_polys)]

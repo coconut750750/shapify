@@ -8,7 +8,11 @@ def to_cartesian(polar_points, origin=(0,0)):
     return np.append(x.T, y.T, axis=1) + origin
 
 
-def sort_by_polar(cartesian_points, origin=(0,0)):
+def sort_polar(points):
+    return np.array(sorted(points, key=lambda x: x[1]))
+
+
+def sort_by_polar(cartesian_points):
     n_points = len(cartesian_points)
     centroid = cartesian_points.sum(axis=0) / n_points
 

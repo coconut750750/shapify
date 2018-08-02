@@ -7,10 +7,11 @@ from shapify.tools.env_constants import Constants
 
 
 class GeneticPolygon:
-    def __init__(self, color, origin=None, points=None):
+    def __init__(self, color, origin=None, points=None, max_points=8):
         self.color = color
         self.origin = origin
         self.points = points
+        self.max_points = max_points
 
     def draw(self, image_draw):
         raise RuntimeError('Override this method in your subclass')
@@ -29,14 +30,28 @@ class GeneticPolygon:
         new_alpha = max(min(self.color[-1] + alpha_delta, Constants.alpha_range[1]), Constants.alpha_range[0])
         self.color = self.color[:-1] + (new_alpha, )
 
+    def add_point(self):
+        raise RuntimeError('Override this method in your subclass')
+
+    def remove_point(self):
+        if len(self.points) > 3:
+            to_remove = random.randint(0, len(self.points))
+            left = self.points[:to_remove]
+            right = self.points[to_remove + 1:]
+            self.points = np.append(left, right, axis=0)
+
     def mutate(self):
-        mutation_type = random.randint(1, 3)
+        mutation_type = random.randint(1, 5)
         if mutation_type == 1:
             self.mutate_origin()
         elif mutation_type == 2:
             self.mutate_pos()
         elif mutation_type == 3:
             self.mutate_color()
+        elif mutation_type == 4:
+            self.add_point()
+        elif mutation_type == 5:
+            self.remove_point()
 
     def clone(self):
         return copy.deepcopy(self)

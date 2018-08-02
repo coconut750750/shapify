@@ -3,7 +3,7 @@ import numpy as np
 import random
 
 from shapify.genetic_image.art_tools.genetic_polygon import GeneticPolygon
-from shapify.genetic_image.art_tools.polar import to_cartesian
+from shapify.genetic_image.art_tools.polar import to_cartesian, sort_polar
 from shapify.tools.env_constants import Constants
 
 
@@ -12,6 +12,7 @@ class PolarPolygon(GeneticPolygon):
         super().__init__(color, origin, polar_points)
 
     def draw(self, image_draw):
+        self.points = sort_polar(self.points)
         cartesian = [tuple(i) for i in to_cartesian(self.points, self.origin)]
         image_draw.polygon(cartesian, fill=self.color)
 
@@ -29,6 +30,10 @@ class PolarPolygon(GeneticPolygon):
             return
         new_theta = random.randint(lower + 1, upper - 1)
         self.points[to_move][1] = new_theta
+
+    def add_point(self):
+        if len(self.points) < self.max_points:
+            self.points = np.append(self.points, np.array([PolarPolygon.get_random_point()]))
 
     @staticmethod
     def random(sides=3):

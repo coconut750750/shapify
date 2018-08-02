@@ -36,8 +36,7 @@ class Pool:
             self.weed()
             self.breed()
             self.mutate()
-            if not i % 10:
-                print('Generation {}'.format(self.generation))
+            print('Generation {}'.format(self.generation))
         print('Best fitness: {}'.format(self.get_best_organism()[1]))
         return self.get_best()
 

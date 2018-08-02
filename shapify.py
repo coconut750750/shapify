@@ -13,7 +13,7 @@ if __name__ == '__main__':
     else:
         pool = Pool(image, total_pop=300)
 
-    best_img = pool.run(0)
+    best_img = pool.run(1000)
     best_img.show()
 
     # pool.get_image(0).show()

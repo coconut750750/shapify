@@ -12,7 +12,9 @@ class CartesianPolygon(GeneticPolygon):
         super().__init__(color, origin, cartesian_points)
 
     def draw(self, image_draw):
-        points = [tuple(i) for i in sort_by_polar(self.points)]
+        if len(self.points) > 3:
+            self.points = sort_by_polar(self.points)
+        points = [tuple(i) for i in self.points]
         image_draw.polygon(points, fill=self.color)
 
     def mutate_origin(self):
@@ -34,11 +36,15 @@ class CartesianPolygon(GeneticPolygon):
         self.points[to_move][0] = new_x
         self.points[to_move][1] = new_y
 
+    def add_point(self):
+        if len(self.points) < self.max_points:
+            self.points = np.append(self.points, np.array([CartesianPolygon.get_random_point()]), axis=0)
+
     @staticmethod
     def random(sides=3):
         color = GeneticPolygon.get_random_color()
         origin = GeneticPolygon.get_random_origin()
-        perim = GeneticPolygon.get_random_perimeter(CartesianPolygon, origin=origin)
+        perim = GeneticPolygon.get_random_perimeter(CartesianPolygon, points=sides, origin=origin)
 
         return CartesianPolygon(color, origin, perim)
 
