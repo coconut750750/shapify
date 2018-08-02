@@ -5,18 +5,27 @@ import colorsys
 
 from shapify.palette.pixel_kmeans import PixelKMeans
 
+
 class PaletteBuilder:
-    def __init__(self, img, filename=None, colors=5):
+    def __init__(self, img, filename=None, colors=5, palette_type='kmeans'):
+        '''
+        -- palette_type must be in the set {'kmeans', 'grouping'}
+        '''
         self.img = img
         self.colors = colors
+        self.palette_type = palette_type
         if not img and filename:
             self.img = Image.open(filename, mode='r').convert('RGB')
 
     def get_new_palette(self):
         frequent_pix = self.get_frequent_pix(num_pix=200)
-        kmeans = PixelKMeans(frequent_pix, k=self.colors)
-        palette = kmeans.run()
-        return PaletteBuilder.sort_palette(palette)
+        if self.palette_type == 'kmeans':
+            kmeans = PixelKMeans(frequent_pix, k=self.colors)
+            palette = kmeans.run()
+            return PaletteBuilder.sort_palette(palette)
+        elif self.palette_type == 'grouping':
+            sorted_pix = PaletteBuilder.sort_palette(frequent_pix)
+            return PaletteBuilder.group_palette(sorted_pix, 200 // self.colors)
 
     def get_frequent_pix(self, num_pix=-1):
         """
@@ -43,6 +52,14 @@ class PaletteBuilder:
     def sort_palette(palette):
         sorted_palette = sorted(palette, key=lambda rgb: colorsys.rgb_to_hsv(*rgb))
         return np.array(sorted_palette)
+
+    @staticmethod
+    def group_palette(palette, n=10):
+        new_palette = []
+        for i in range(0, len(palette), n):
+            group = palette[i: i + n]
+            new_palette.append(group.mean(axis=0).round().astype(int))
+        return new_palette
 
     @staticmethod
     def create_palette(palette, square_size=100):

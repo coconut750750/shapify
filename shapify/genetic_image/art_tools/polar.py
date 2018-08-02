@@ -1,4 +1,3 @@
-from bisect import bisect_left
 import numpy as np
 
 def to_cartesian(polar_points, origin=(0,0)):
@@ -8,12 +7,10 @@ def to_cartesian(polar_points, origin=(0,0)):
     y = np.array([r * np.sin(theta)])
     return np.append(x.T, y.T, axis=1) + origin
 
-def sort_polar(points):
-    return np.array(sorted(points, key=lambda x: x[1]))
 
-def sorted_polar_insert(points, polar):
-    keys = [x[1] for x in points]
-    k = polar[1]
-    i = bisect_left(keys, k)
-    p = np.insert(points, i, polar, axis=0)
-    return np.insert(points, i, polar, axis=0)
+def sort_by_polar(cartesian_points, origin=(0,0)):
+    n_points = len(cartesian_points)
+    centroid = cartesian_points.sum(axis=0) / n_points
+
+    key = lambda p: np.arctan2(*(p - centroid)[::-1])
+    return np.array(sorted(cartesian_points, key=key))
