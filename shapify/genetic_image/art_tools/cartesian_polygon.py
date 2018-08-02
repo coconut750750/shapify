@@ -4,6 +4,7 @@ import random
 
 from shapify.genetic_image.art_tools.genetic_polygon import GeneticPolygon
 from shapify.tools.env_constants import Constants
+from shapify.genetic_image.art_tools.polar import sort_by_polar
 
 
 class CartesianPolygon(GeneticPolygon):
@@ -11,7 +12,7 @@ class CartesianPolygon(GeneticPolygon):
         super().__init__(color, origin, cartesian_points)
 
     def draw(self, image_draw):
-        points = [tuple(i) for i in self.points]
+        points = [tuple(i) for i in sort_by_polar(self.points)]
         image_draw.polygon(points, fill=self.color)
 
     def mutate_origin(self):

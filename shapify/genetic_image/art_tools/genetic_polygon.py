@@ -25,7 +25,9 @@ class GeneticPolygon:
         raise RuntimeError('Override this method in your subclass')
 
     def mutate_color(self):
-        self.color = self.color[:-1] + (random.randint(*Constants.alpha_range), )
+        alpha_delta = random.randint(-Constants.max_alpha_shift, Constants.max_alpha_shift)
+        new_alpha = max(min(self.color[-1] + alpha_delta, Constants.alpha_range[1]), Constants.alpha_range[0])
+        self.color = self.color[:-1] + (new_alpha, )
 
     def mutate(self):
         mutation_type = random.randint(1, 3)
@@ -42,7 +44,7 @@ class GeneticPolygon:
     def __eq__(self, other):
         if other is None:
             return False
-        return other.color == self.color and other.points == self.points
+        return other.color == self.color and (other.points == self.points).all()
 
     def __str__(self):
         return "[Polygon | color : {} points : {}]".format(self.color, self.points)

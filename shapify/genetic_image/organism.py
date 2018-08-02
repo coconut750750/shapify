@@ -48,7 +48,6 @@ class Organism:
         child = Organism(self.poly_type, starting_polys=0, max_polys=self.max_polys)
         child.polygons = child_polys
 
-        child.mutate()
         return child
 
     def add_poly(self):

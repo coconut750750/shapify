@@ -22,7 +22,7 @@ class Pool:
         self.mutation_rate = mutation_rate
         self.generation = 0
 
-        pb = PaletteBuilder(self.target, colors=10)
+        pb = PaletteBuilder(self.target, colors=10, palette_type='kmeans')
         self.palette = pb.get_new_palette()
         self.image_size = self.target.size
         Constants.init(self.palette, self.image_size)
@@ -36,7 +36,8 @@ class Pool:
             self.weed()
             self.breed()
             self.mutate()
-            print('Generation {}'.format(self.generation))
+            if not i % 10:
+                print('Generation {}'.format(self.generation))
         print('Best fitness: {}'.format(self.get_best_organism()[1]))
         return self.get_best()
 
@@ -60,7 +61,9 @@ class Pool:
 
         for i in range(num_children):
             random_parents = random.sample(self.population, 2)
-            new_pop.append(random_parents[0].breed(random_parents[1]))
+            child = random_parents[0].breed(random_parents[1])
+            child.mutate()
+            new_pop.append(child)
 
         self.population += new_pop
         return self.population
@@ -85,6 +88,9 @@ class Pool:
 
     def get_best(self):
         return self.get_best_organism()[0].get_image()
+
+    def get_image(self, i):
+        return self.population[i].get_image()
 
     def save(self, filename): 
         with open(filename, 'wb') as f: 

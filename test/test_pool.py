@@ -9,17 +9,14 @@ from shapify.genetic_image.pool import Pool
 class TestPool:
     def setup_method(self):
         self.image = Image.open('test.png', 'r').convert('RGB')
-        self.pool = Pool(self.image, total_pop=5)
-
-    def test_pool_seed(self):
-        best = self.pool.get_best()
+        self.pool = Pool(self.image, total_pop=6)
 
     def test_pool_weed(self):
-        next_gen = self.pool.weed()
+        next_gen = self.pool.weed(top_percent=0.5, lucky_percent=0)
         assert len(next_gen) == self.pool.total_pop // 2
 
     def test_pool_breed(self):
-        orig = self.pool.weed()
+        orig = self.pool.weed(top_percent=0.5, lucky_percent=0)
         old_len = len(orig)
         new = self.pool.breed()
         assert len(new) == old_len * 2
@@ -29,4 +26,3 @@ class TestPool:
 
     def test_pool_run(self):
         best_img = self.pool.run(1)
-        best_img.show()
